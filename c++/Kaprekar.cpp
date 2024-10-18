@@ -1,65 +1,59 @@
-// C++ program to check if a number is a Kaprekar number for a specific base.
-
 #include <iostream>
 #include <cmath>
-using namespace std;
+#include <string>
 
-bool isKaprekar(int number, int base)
-{
-    if (number < 0 || base <= 1)
-    {
-        return false;
+bool isKaprekar(int n, int base) {
+    // Calculate the square of the number
+    long long square = static_cast<long long>(n) * n;
+
+    // Convert number and its square to the specified base
+    std::string nBase = "";
+    std::string squareBase = "";
+
+    // Convert n to base
+    int tempN = n;
+    while (tempN > 0) {
+        nBase = std::to_string(tempN % base) + nBase;
+        tempN /= base;
     }
-    long long squared = static_cast<long long>(number) * number;
-    long long divisor = 1;
-    while (squared / divisor >= base)
-    {
-        divisor *= base;
+
+    // Convert square to base
+    long long tempSquare = square;
+    while (tempSquare > 0) {
+        squareBase = std::to_string(tempSquare % base) + squareBase;
+        tempSquare /= base;
     }
-    while (divisor > 0)
-    {
-        long long left = squared / divisor;
-        long long right = squared % divisor;
-        if (left + right == number && right > 0)
-        {
-            return true;
-        }
-        divisor /= base;
-    }
-    return false;
+
+    // Length of n in base
+    int d = nBase.length();
+    int squareLength = squareBase.length();
+
+    // Split the square representation into two parts
+    std::string rightPart = squareBase.substr(squareLength - d);
+    std::string leftPart = squareBase.substr(0, squareLength - d);
+
+    // Convert parts back to base 10
+    int rightValue = std::stoi(rightPart);
+    int leftValue = leftPart.empty() ? 0 : std::stoi(leftPart);
+
+    // Check if the sum of left and right parts equals n
+    return (leftValue + rightValue == n);
 }
-int main()
-{
+
+int main() {
     int number, base;
-    cout << "Enter a number: ";
-    cin >> number;
-    cout << "Enter the base: ";
-    cin >> base;
-    if (isKaprekar(number, base))
-    {
-        cout << number << " is a Kaprekar number in base " << base << endl;
+
+    std::cout << "Enter a number: ";
+    std::cin >> number;
+
+    std::cout << "Enter a base: ";
+    std::cin >> base;
+
+    if (isKaprekar(number, base)) {
+        std::cout << number << " is a Kaprekar number in base " << base << ".\n";
+    } else {
+        std::cout << number << " is not a Kaprekar number in base " << base << ".\n";
     }
-    else
-    {
-        cout << number << " is not a Kaprekar number in base " << base << endl;
-    }
+
     return 0;
 }
-
-// Output:
-
-// Enter a number: 9
-// Enter the base: 10
-// 9 is a Kaprekar number in base 10
-// Enter a number: 45
-// Enter the base: 10
-// 45 is a Kaprekar number in base 10
-// Enter a number: 297
-// Enter the base: 10// 297 is a Kaprekar number in base 10
-
-// Non Kaprekar Numbers
-// Enter a number: 13
-// Enter the base: 10
-// 13 is not a Kaprekar number in base 10
-// Enter a number: 19
-// Enter the base: 10// 19 is not a Kaprekar number in base 10
