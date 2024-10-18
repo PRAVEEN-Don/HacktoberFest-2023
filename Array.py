@@ -1,10 +1,19 @@
-#The following code is for to find Maximum number from an given array
+def find_max(arr):
+    # Check if the array is empty
+    if len(arr) == 0:
+        return None  # Return None if array is empty
+    
+    # Initialize max_element to the first element in the array
+    max_element = arr[0]
+    
+    # Loop through the array to find the maximum element
+    for num in arr:
+        if num > max_element:
+            max_element = num
+    
+    return max_element
 
-array=list(map(int,input().split()))
-
-arr=array[0]   #By using logic :)
-for i in range(1,len(array)):
-    if arr<array[i]:
-        arr=array[i]
-        
-print(arr)
+# Example usage:
+array = [10, 50, 30, 70, 20]
+max_number = find_max(array)
+print(f"The maximum number in the array is: {max_number}")
